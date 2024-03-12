@@ -1,5 +1,8 @@
 import subprocess
+import biplist
+from pprint import pprint
 import modify_apple_script as mas
+
 
 # AppleScript 파일 실행
 def run_apple_script(apple_script_path):
@@ -13,8 +16,8 @@ def run_apple_script(apple_script_path):
     return process.stdout.strip()
 
 
-#프로젝트 이름 가져오기 (ex. dingdong.logicx가 열려 있다면 "dingdong" 문자열 가져오기)
-## applescript : 현재 logicx중 첫번째 process를 자동으로 가져옴 --> 나중에 원하는 logicx 파일 쓰도록 applescript 내용 변경 필요
+# 프로젝트 이름 가져오기 (ex. dingdong.logicx가 열려 있다면 "dingdong" 문자열 가져오기)
+# applescript : 현재 logicx중 첫번째 process를 자동으로 가져옴 --> 나중에 원하는 logicx 파일 쓰도록 applescript 내용 변경 필요
 def get_project_name():
     script_path = "applescripts/get_project_name.scpt"
     project_name = run_apple_script(script_path)
@@ -33,6 +36,15 @@ def get_project_info_aif():
 
     mas.modify_apple_script(script, txt_path, "YOUR_TXT_PATH")
 
+def get_project_metadata():
+    try:
+        # 바이너리 plist 파일 열기
+        metadata = biplist.readPlist('/Users/sangjin/Desktop/empty_templates.logicx/Alternatives/000/MetaData.plist')
+        # plist 데이터 출력
+        pprint(metadata)
+    except (biplist.InvalidPlistException, biplist.NotBinaryPlistException) as e:
+        print(f'Error reading plist file: {e}')
 
 # 함수 호출
+get_project_metadata()
 get_project_info_aif()
