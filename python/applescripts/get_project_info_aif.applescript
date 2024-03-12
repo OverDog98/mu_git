@@ -1,0 +1,50 @@
+tell application "Logic Pro X" to activate -- Logic Pro X¸¦ È°¼ºÈ­ÇÕ´Ï´Ù.
+
+tell application "System Events"
+	tell process "Logic Pro X"
+		keystroke "d"
+		delay 0.5
+		keystroke "a" using {command down} -- ¸ðµç Ç×¸ñÀ» ¼±ÅÃÇÕ´Ï´Ù.
+		delay 0.5 -- ¼±ÅÃÀÌ ¿Ï·áµÇ±â¸¦ ±â´Ù¸³´Ï´Ù.
+		keystroke "c" using {command down} -- ¼±ÅÃÇÑ Ç×¸ñÀ» º¹»çÇÕ´Ï´Ù.
+		delay 0.5
+		keystroke "d" using {shift down}
+		delay 0.5
+		keystroke "d"
+		
+	end tell
+end tell
+
+-- Logic Pro X¿¡¼­ ÇÊ¿äÇÑ Á¤º¸¸¦ Å¬¸³º¸µå¿¡ º¹»çÇÏ´Â ´Ü°è°¡ ¼±ÇàµÇ¾î¾ß ÇÕ´Ï´Ù.
+
+tell application "System Events"
+	-- Å¬¸³º¸µåÀÇ ³»¿ëÀ» °¡Á®¿É´Ï´Ù.
+	set clipboardData to the clipboard as text
+end tell
+
+-- UTF-8·Î ÀÎÄÚµùµÈ µ¥ÀÌÅÍ¸¦ º¯¼ö¿¡ ÀúÀåÇÕ´Ï´Ù.
+set utf8Data to clipboardData as ¦\class utf8¦]
+
+-- Å¬¸³º¸µå µ¥ÀÌÅÍ¸¦ ÅØ½ºÆ® ÆÄÀÏ·Î ÀúÀåÇÕ´Ï´Ù.
+--set filePath to "/Users/sangjin/Desktop/12345.txt" -- ÀúÀåÇÒ ÆÄÀÏÀÇ °æ·Î¿Í ÀÌ¸§À» ÁöÁ¤ÇÕ´Ï´Ù.
+set filePath to "YOUR_TXT_PATH" --python¿¡¼­ txt ÆÄÀÏÀÌ¸§ ÁöÁ¤ÇÏ±â À§ÇØ »ç¿ë
+
+-- ÆÄÀÏ ÂüÁ¶ »ý¼º
+set fileRef to POSIX file filePath
+
+tell application "System Events"
+	if not (exists fileRef) then
+		-- ÆÄÀÏÀÌ Á¸ÀçÇÏÁö ¾ÊÀ¸¸é »õ ÆÄÀÏ »ý¼º
+		set fileRef to open for access fileRef with write permission
+		write "" to fileRef -- ºó ³»¿ëÀ¸·Î ÆÄÀÏ »ý¼º
+		close access fileRef
+	end if
+end tell
+
+
+
+set fileRef to open for access POSIX file filePath with write permission -- ÆÄÀÏÀ» ¾²±â °¡´ÉÇÏ°Ô ¿­±â
+set eof of fileRef to 0
+-- UTF-8·Î ÀÎÄÚµùµÈ µ¥ÀÌÅÍ¸¦ ÆÄÀÏ¿¡ ¾¹´Ï´Ù.
+write utf8Data to fileRef starting at eof as ¦\class utf8¦]
+close access fileRef -- ÆÄÀÏ ´Ý±â

@@ -1,0 +1,8 @@
+tell application "System Events"
+	set projectName to name of window 1 of process "Logic Pro X"
+end tell
+return projectName
+
+--현재 열려있는 로직 프로젝트중 첫번째로 열린거 이름 가져오기
+-- line 2 : window 1은 프로세스중 가장 위에있는 프로세스라는 말임
+-- 			그래서 추후 원하는 lpx 선택되게 하도록 변화필요
