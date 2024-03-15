@@ -1,7 +1,7 @@
 def info_data_to_json(txt_path):
+    event_info = {"EventData" : {}}
     with open(txt_path, 'r') as file:
         lines = file.readlines()
-
     # 각 줄을 분석하여 JSON 형식으로 변환
     track_data = []
     for line in lines:
@@ -16,9 +16,9 @@ def info_data_to_json(txt_path):
 
         # Dictionary 형태로 데이터 저장
         track_info = {
-            "StartPosition": start_position,
-            "Name": name,
             "Track": track,
+            "Name": name,
+            "StartPosition": start_position,
             "Length": length
         }
 
